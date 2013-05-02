@@ -1,7 +1,6 @@
 aad-scripts
 ===========
-Album Art Downloader Scripts
-Additional scripts for Album Art Downloader
+Additional scripts for Album Art Downloader.
 
 http://sourceforge.net/projects/album-art/
 
