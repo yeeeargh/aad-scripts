@@ -38,7 +38,7 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 					mbid = release["id"]
 					mbidArtist = release["artist-credit"]["name-credit"][0]["artist"]["name"]
 					mbidTitle = release["title"]
-					mbidScore = Convert.ToInt32(release["score"])
+					mbidScore = System.Convert.ToInt32(release["score"])
 					
 					if mbidScore > scoreThreshold:
 						try:
