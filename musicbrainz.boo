@@ -10,17 +10,19 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 	Author as string:
 		get: return "Sebastian Hauser"
 	Version as string:
-		get: return "0.3"
+		get: return "0.4"
 	
 	def Search(artist as string, album as string, results as IScriptResults):
-		artist = StripCharacters("&.'\";:?!", artist)
-		album = StripCharacters("&.'\";:?!", album)
+		//striping isn't really necessary here, because musicbrainz handels those characters quite well
+		#artist = StripCharacters("&.'\";:?!", artist)
+		#album = StripCharacters("&.'\";:?!", album)
 		
 		if(artist!= null and album!=null):			
 			mbidBaseUrl = "http://search.musicbrainz.org/ws/2/release/"
 			
-			#mbidUrl = "${mbidBaseUrl}?fmt=json&query=release:" + EncodeUrl("\"" + dummy + "\" AND artist:\"" + portishead + "\"")
-			mbidUrl = "${mbidBaseUrl}?fmt=json&query=release:" + EncodeUrl("\"" + album + "\" AND artist:\"" + artist + "\"")
+			#mbidUrl = "${mbidBaseUrl}?fmt=json&query=release:" + EncodeUrl("\"" + "dummy" + "\" AND artist:\"" + "portishead" + "\"") //Test for album Portishead - Dummy
+			mbidUrl = "${mbidBaseUrl}?fmt=json&query=release:" + EncodeUrl("\"" + album + "\" AND artist:\"" + artist + "\"") // exact search like: "Source tags & codes" AND artist:"...and you will know us by the trail of dead"
+			#mbidUrl = "${mbidBaseUrl}?fmt=json&query=release:" + EncodeUrl(album + " AND artist:" + artist) // less exact search like: Source tags & codes AND artist:...and you will know us by the trail of dead
 						
 			picBaseUrl = "http://coverartarchive.org/release"
 			
