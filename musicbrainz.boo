@@ -10,7 +10,7 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 	Author as string:
 		get: return "Sebastian Hauser"
 	Version as string:
-		get: return "0.4"
+		get: return "0.5"
 	
 	def Search(artist as string, album as string, results as IScriptResults):
 		//striping isn't really necessary here, because musicbrainz handels those characters quite well
@@ -66,7 +66,8 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 						
 						except e as System.Net.WebException:
 							results.EstimatedCount--
-					
+					else:
+						results.EstimatedCount--
 			except e:
 				return
 		else:
