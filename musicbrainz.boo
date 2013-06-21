@@ -6,7 +6,7 @@ import util
 
 class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 	Name as string:
-		get: return "Musicbrainz"
+		get: return "MusicBrainz"
 	Author as string:
 		get: return "Sebastian Hauser"
 	Version as string:

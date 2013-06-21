@@ -9,7 +9,7 @@ http://sourceforge.net/apps/mediawiki/album-art/index.php?title=Writing_Script_F
 
 musicbrainz.boo
 --------
-Uses Musicbrainz and Cover Art Archive for obtaining covers. Both services provide their data in json format. The script parses the json files, gets the right albums an tries to get the covers linked to them.
+Uses MusicBrainz and Cover Art Archive for obtaining covers. Both services provide their data in json format. The script parses the json files, gets the right albums an tries to get the covers linked to them.
 
 ### Documentation
 http://musicbrainz.org/doc/Development/JSON_Web_Service
