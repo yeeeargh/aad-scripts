@@ -24,6 +24,31 @@ http://www.musicbrainz.org/ws/2/release?query="Dummy"&artist="Portishead"&fmt=js
 http://coverartarchive.org/release/76df3287-6cda-33eb-8e9a-044b5e15ffdd/
 
 
+7digital.boo
+--------
+Uses 7digital for obtaining covers. I modified the script from Alex Vallat to use their webservice instead of the website. This way I can use their score to filter out obvious errors.
+
+### Documentation
+http://developer.7digital.com/resources/api-docs
+
+http://developer.7digital.com/resources/api-docs/api-basics#Image_sizes_of_cover_art_and_artist_pictures
+
+http://developer.7digital.com/resources/api-docs/catalogue-api#release/search
+
+### Example URLs
+Portishead - Dummy
+
+http://api.7digital.com/1.2/release/search?q=Portishead+Dummy&oauth_consumer_key=YOUR_KEY_HERE
+
+
 test-script.bat
 --------
 This is simple test script. It starts a few searches which were faulty in the past to see if everything still works.
+
+
+debug
+--------
+you can create a logfile for debugging
+
+System.IO.File.WriteAllText("debug.log", "CREATE DEBUG FILE" + "\n")
+System.IO.File.AppendAllText("debug.log", "APPEND DEBUG MESSAGE + "\n")
