@@ -3,11 +3,11 @@ import System.Xml
 import AlbumArtDownloader.Scripts
 import util
 
-class sevendigital(AlbumArtDownloader.Scripts.IScript):
+class sevendigitalws(AlbumArtDownloader.Scripts.IScript):
 	Name as string:
-		get: return "7digital"
+		get: return "7digital-ws"
 	Version as string:
-		get: return "0.4"
+		get: return "0.1"
 	Author as string:
 		get: return "Sebastian Hauser, Alex Vallat"
 	

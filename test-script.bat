@@ -19,11 +19,11 @@ start %aadbin% /artist "The Real McKenzies" /album "10,000 shots" /sources "Musi
 :: Just an album name
 start %aadbin% /album "Dummy" /sources "Musicbrainz"
 
-:: 7digital
-cp -u 7digital.boo %aadscripts%
+:: 7digital Webservice
+cp -u 7digital-ws.boo %aadscripts%
 
 :: Example
-start %aadbin% /artist "Portishead" /album "Dummy" /sources "7digital"
+start %aadbin% /artist "Portishead" /album "Dummy" /sources "7digital-ws"
 
 :: Album with special characters
-start %aadbin% /artist "Volbeat" /album "Outlaw gentlemen & shady ladies" /sources "7digital"
+start %aadbin% /artist "Volbeat" /album "Outlaw gentlemen & shady ladies" /sources "7digital-ws"

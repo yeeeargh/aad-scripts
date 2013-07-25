@@ -24,9 +24,10 @@ http://www.musicbrainz.org/ws/2/release?query="Dummy"&artist="Portishead"&fmt=js
 http://coverartarchive.org/release/76df3287-6cda-33eb-8e9a-044b5e15ffdd/
 
 
-7digital.boo
+7digital-ws.boo
 --------
 Uses 7digital for obtaining covers. I modified the script from Alex Vallat to use their webservice instead of the website. This way I can use their score to filter out obvious errors.
+Unfortunately their ToS more or less forbids the use of their webservice for this script, so it shouldn't be used. I'll keep it for documentation though.
 
 ### Documentation
 http://developer.7digital.com/resources/api-docs
