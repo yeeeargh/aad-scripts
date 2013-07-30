@@ -12,6 +12,7 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 	Version as string:
 		get: return "0.6"
 	
+	
 	def Search(artist as string, album as string, results as IScriptResults):
 		if(artist!= null and album!=null):			
 			//striping isn't really necessary here, because musicbrainz handles those characters quite well
@@ -70,12 +71,13 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 		else:
 			#both Parameter album and artist are necessary
 			results.EstimatedCount = 0;
-		
+	
 	
 	def GetCaaUrl(mbid as string):
 		caaBaseUrl = "http://coverartarchive.org/release/"
 		return caaBaseUrl + mbid
-			
+	
+	
 	def GetMbidUrl(artist as string, album as string):
 		encodedArtist = EncodeUrl(artist)
 		encodedAlbum = EncodeUrl(album)
@@ -88,7 +90,7 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 			return "${mbidBaseUrl}?fmt=json&query=artist:${encodedArtist}"
 		else:
 			return "${mbidBaseUrl}?fmt=json&query=release:${encodedAlbum} AND artist:${encodedArtist}"
-
+	
 	
 	def RetrieveFullSizeImage(fullSizeCallbackParameter):
 		return fullSizeCallbackParameter;

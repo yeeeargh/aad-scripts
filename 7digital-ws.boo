@@ -11,6 +11,7 @@ class SevenDigitalWS(AlbumArtDownloader.Scripts.IScript):
 	Author as string:
 		get: return "Sebastian Hauser, Alex Vallat"
 	
+	
 	def Search(artist as string, album as string, results as IScriptResults):
 		if(artist!= null and album!=null):
 			//artist = StripCharacters("&.'\";:?!", artist)
@@ -74,7 +75,8 @@ class SevenDigitalWS(AlbumArtDownloader.Scripts.IScript):
 		else:
 			//both Parameter album and artist are necessary
 			results.EstimatedCount = 0;
-		
+	
+	
 	def GetUrl(artist as string, album as string):
 		encodedArtist = EncodeUrl(artist)
 		encodedAlbum = EncodeUrl(album)
@@ -89,13 +91,12 @@ class SevenDigitalWS(AlbumArtDownloader.Scripts.IScript):
 			return "${baseUrl}search?q=${encodedArtist}&oauth_consumer_key=${apiKey}"
 		else:
 			return "${baseUrl}search?q=${encodedArtist}+${encodedAlbum}&oauth_consumer_key=${apiKey}"
-
-
-
+	
 	
 	def RetrieveFullSizeImage(fullSizeCallbackParameter):
 		return fullSizeCallbackParameter;
-
+	
+	
 	def CheckResponse(image, size):
 		checkRequest = System.Net.HttpWebRequest.Create(image + "_" + size + ".jpg") as System.Net.HttpWebRequest
 		checkRequest.Method = "HEAD"
@@ -108,4 +109,3 @@ class SevenDigitalWS(AlbumArtDownloader.Scripts.IScript):
 		ensure:
 			if response != null:
 				response.Close()
-		
