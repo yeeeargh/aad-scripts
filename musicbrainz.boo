@@ -77,17 +77,17 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 		return caaBaseUrl + mbid
 			
 	def GetMbidUrl(artist as string, album as string):
-		encodedArtist = EncodeUrl("artist:" + artist)
+		encodedArtist = EncodeUrl(artist)
 		encodedAlbum = EncodeUrl(album)
 		mbidBaseUrl = "http://search.musicbrainz.org/ws/2/release/"
 		if artist == "" and album == "":
-			return "${mbidBaseUrl}?fmt=json&query=release:"
+			return "${mbidBaseUrl}?fmt=json&query="
 		elif artist == "":
 			return "${mbidBaseUrl}?fmt=json&query=release:${encodedAlbum}"
 		elif album == "":
-			return "${mbidBaseUrl}?fmt=json&query=release:${encodedArtist}"
+			return "${mbidBaseUrl}?fmt=json&query=artist:${encodedArtist}"
 		else:
-			return "${mbidBaseUrl}?fmt=json&query=release:${encodedAlbum} AND ${encodedArtist}"
+			return "${mbidBaseUrl}?fmt=json&query=release:${encodedAlbum} AND artist:${encodedArtist}"
 
 	
 	def RetrieveFullSizeImage(fullSizeCallbackParameter):
