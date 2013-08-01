@@ -1,4 +1,3 @@
-# refs: System.Web.Extensions
 import System.Collections.Generic
 import System.Web.Script.Serialization
 import AlbumArtDownloader.Scripts
@@ -42,7 +41,7 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 					if mbidScore > scoreThreshold:
 
 						try:
-							#picUrl = GetCaaUrl(76df3287-6cda-33eb-8e9a-044b5e15ffdd) //Test for album Portishead - Dummy
+							//picUrl = GetCaaUrl(76df3287-6cda-33eb-8e9a-044b5e15ffdd) //Test for album Portishead - Dummy
 							picUrl = GetCaaUrl(mbid)
 							
 							picDoc = GetPage(picUrl)
@@ -69,7 +68,7 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 			except e:
 				return
 		else:
-			#both Parameter album and artist are necessary
+			//both Parameter album and artist are necessary
 			results.EstimatedCount = 0;
 	
 	
