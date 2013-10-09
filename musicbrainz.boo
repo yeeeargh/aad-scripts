@@ -34,7 +34,14 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 				
 				for release as Dictionary[of string, object] in mbidResult["releases"]:
 					mbid = release["id"]
-					mbidArtist = release["artist-credit"][0]["artist"]["name"]
+					
+					//join multiple artist credits
+					mbidArtist = ""
+					for artistCredit as Dictionary[of string, object] in release["artist-credit"]:
+						mbidArtist += artistCredit["artist"]["name"]
+						if artistCredit.ContainsKey("joinphrase"):
+							mbidArtist += artistCredit["joinphrase"]
+							
 					mbidTitle = release["title"]
 					mbidScore = System.Convert.ToInt32(release["score"])
 					

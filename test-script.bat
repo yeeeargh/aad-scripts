@@ -16,6 +16,9 @@ start %aadbin% /artist "Volbeat" /album "Outlaw gentlemen & shady ladies" /sourc
 :: Had some unusual results while searching for this album
 start %aadbin% /artist "The Real McKenzies" /album "10,000 shots" /sources "Musicbrainz"
 
+:: Multiple artists
+start %aadbin% /artist "Leatherface & Hot Water Music" /album "BYO Split Series, Volume I" /sources "Musicbrainz"
+
 :: Just an album name
 start %aadbin% /album "Dummy" /sources "Musicbrainz"
 
