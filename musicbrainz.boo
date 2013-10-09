@@ -9,7 +9,7 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 	Author as string:
 		get: return "Sebastian Hauser"
 	Version as string:
-		get: return "0.6"
+		get: return "0.7"
 	
 	
 	def Search(artist as string, album as string, results as IScriptResults):
@@ -18,7 +18,7 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 			//artist = StripCharacters("&.'\";:?!", artist)
 			//album = StripCharacters("&.'\";:?!", album)
 			
-			mbidUrl = GetMbidUrl("Portishead", "Dummy") //Test for album Portishead - Dummy
+			//mbidUrl = GetMbidUrl("Portishead", "Dummy") //Test for album Portishead - Dummy
 			mbidUrl = GetMbidUrl(artist, album)
 			
 			json = JavaScriptSerializer()
@@ -27,21 +27,20 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 				mbidDoc = GetPage(mbidUrl)
 				mbidResult = json.DeserializeObject(mbidDoc) as Dictionary[of string, object]
 
-				results.EstimatedCount = mbidResult["release-list"]["count"]
+				results.EstimatedCount = mbidResult["count"]
 				
 				//results are sorted by score. get first score and discard all results where the score is less then 60% of that score.
-				scoreThreshold = System.Convert.ToInt32(mbidResult["release-list"]["release"][0]["score"]) * 0.6
+				scoreThreshold = System.Convert.ToInt32(mbidResult["releases"][0]["score"]) * 0.6
 				
-				for release as Dictionary[of string, object] in mbidResult["release-list"]["release"]:
+				for release as Dictionary[of string, object] in mbidResult["releases"]:
 					mbid = release["id"]
-					mbidArtist = release["artist-credit"]["name-credit"][0]["artist"]["name"]
+					mbidArtist = release["artist-credit"][0]["artist"]["name"]
 					mbidTitle = release["title"]
 					mbidScore = System.Convert.ToInt32(release["score"])
 					
 					if mbidScore > scoreThreshold:
 
 						try:
-							//picUrl = GetCaaUrl(76df3287-6cda-33eb-8e9a-044b5e15ffdd) //Test for album Portishead - Dummy
 							picUrl = GetCaaUrl(mbid)
 							
 							picDoc = GetPage(picUrl)
@@ -80,7 +79,7 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 	def GetMbidUrl(artist as string, album as string):
 		encodedArtist = EncodeUrl(artist)
 		encodedAlbum = EncodeUrl(album)
-		mbidBaseUrl = "http://search.musicbrainz.org/ws/2/release/"
+		mbidBaseUrl = "http://musicbrainz.org/ws/2/release/"
 		if artist == "" and album == "":
 			return "${mbidBaseUrl}?fmt=json&query="
 		elif artist == "":
