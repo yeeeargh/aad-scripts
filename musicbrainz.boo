@@ -113,7 +113,7 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 	
 	def GetMusicBrainzStream(url as String):
 		request = WebRequest.Create(url) as HttpWebRequest
-		request.UserAgent = "AAD:" + Name + "/" + Version
+		request.UserAgent = "AAD:" + Name + "/" + Version + " ( https://github.com/yeeeargh/aad-scripts )"
 				
 		return request.GetResponse().GetResponseStream()
 	
