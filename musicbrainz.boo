@@ -1,3 +1,5 @@
+import System
+import System.Net
 import System.Collections.Generic
 import System.Web.Script.Serialization
 import AlbumArtDownloader.Scripts
@@ -9,7 +11,7 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 	Author as string:
 		get: return "Sebastian Hauser"
 	Version as string:
-		get: return "0.7"
+		get: return "0.8"
 	
 	
 	def Search(artist as string, album as string, results as IScriptResults):
@@ -24,7 +26,7 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 			json = JavaScriptSerializer()
 			
 			try:
-				mbidDoc = GetPage(mbidUrl)
+				mbidDoc = GetMusicBrainzPage(mbidUrl)
 				mbidResult = json.DeserializeObject(mbidDoc) as Dictionary[of string, object]
 
 				results.EstimatedCount = mbidResult["count"]
@@ -50,7 +52,7 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 						try:
 							picUrl = GetCaaUrl(mbid)
 							
-							picDoc = GetPage(picUrl)
+							picDoc = GetMusicBrainzPage(picUrl)
 							picResult = json.DeserializeObject(picDoc) as Dictionary[of string, object]
 							
 							infoUrl = picResult["release"]
@@ -65,7 +67,7 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 									coverType = CoverType.Back
 								else:
 									coverType = CoverType.Unknown
-								results.Add(thumbnailUrl, name, infoUrl, -1, -1, pictureUrl, coverType)
+								results.Add(GetMusicBrainzStream(thumbnailUrl), name, infoUrl, -1, -1, pictureUrl, coverType)
 						
 						except e as System.Net.WebException:
 							results.EstimatedCount--
@@ -98,4 +100,21 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 	
 	
 	def RetrieveFullSizeImage(fullSizeCallbackParameter):
-		return fullSizeCallbackParameter;
+		return GetMusicBrainzStream(fullSizeCallbackParameter);
+
+	
+	def GetMusicBrainzPage(url as String):
+		stream = GetMusicBrainzStream(url)
+		try:
+			return GetPage(stream)
+		ensure:
+			stream.Close()
+	
+	
+	def GetMusicBrainzStream(url as String):
+		request = WebRequest.Create(url) as HttpWebRequest
+		request.UserAgent = "AAD:" + Name + "/" + Version
+				
+		return request.GetResponse().GetResponseStream()
+	
+	
