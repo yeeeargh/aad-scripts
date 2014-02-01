@@ -22,6 +22,13 @@ start %aadbin% /artist "Leatherface & Hot Water Music" /album "BYO Split Series,
 :: Just an album name
 start %aadbin% /album "Dummy" /sources "Musicbrainz"
 
+:: Encoding of  ! # $ % & ' ( ) * + , / : ; = ? @ [ ]
+start %aadbin% /artist "Oasis" /album "(What's the Story) Morning Glory?" /sources "Musicbrainz"
+
+:: Less strict search with lucene groupings
+start %aadbin% /artist "xploschns in se sky" /album "how strance, inno" /sources "Musicbrainz"
+
+
 :: 7digital Webservice
 copy 7digital-ws.boo %aadscripts%
 

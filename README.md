@@ -12,6 +12,12 @@ musicbrainz.boo
 Uses MusicBrainz and Cover Art Archive for obtaining covers. Both services provide their data in json format. The script parses the json files, gets the right albums an tries to get the covers linked to them.
 
 ### Documentation
+https://musicbrainz.org/doc/Development/XML_Web_Service/Version_2
+
+https://musicbrainz.org/doc/Development/XML_Web_Service/Version_2/Search
+
+https://lucene.apache.org/core/4_3_0/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#Fuzzy_Searches
+
 http://musicbrainz.org/doc/Development/JSON_Web_Service
 
 http://musicbrainz.org/doc/Cover_Art_Archive/API
@@ -22,6 +28,11 @@ Portishead - Dummy
 http://www.musicbrainz.org/ws/2/release?query="Dummy"&artist="Portishead"&fmt=json
 
 http://coverartarchive.org/release/76df3287-6cda-33eb-8e9a-044b5e15ffdd/
+
+### Bugs/Workarounds
+Due to the fact, that the Webservice uses Lucene/Advanced Query Syntax we have to escape some characters.
+
+[MBS-4611](http://tickets.musicbrainz.org/browse/MBS-4611) : I also used the grouping feature of Lucene to get a bit more fuzzy results if the artist or albume name aren't 100% exact.
 
 
 7digital-ws.boo

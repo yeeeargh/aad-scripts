@@ -4,6 +4,7 @@ import System.Collections.Generic
 import System.Web.Script.Serialization
 import AlbumArtDownloader.Scripts
 import util
+import System.Text.RegularExpressions
 
 class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 	Name as string:
@@ -11,7 +12,7 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 	Author as string:
 		get: return "Sebastian Hauser"
 	Version as string:
-		get: return "0.8"
+		get: return "0.9"
 	
 	
 	def Search(artist as string, album as string, results as IScriptResults):
@@ -86,17 +87,28 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 	
 	
 	def GetMbidUrl(artist as string, album as string):
-		encodedArtist = EncodeUrl(artist)
-		encodedAlbum = EncodeUrl(album)
+		//escape lucene search term
+		regexpArtist = /[+!(){}\[\]^"~*?:\\\/-]|&&|\|\|/g.Replace(artist) do (m as Match): return "\\${m}"
+		regexpAlbum = /[+!(){}\[\]^"~*?:\\\/-]|&&|\|\|/g.Replace(album) do (m as Match): return "\\${m}"
+		
+		encodedArtist = EncodeUrl(regexpArtist)
+		encodedAlbum = EncodeUrl(regexpAlbum)
+		
 		mbidBaseUrl = "http://musicbrainz.org/ws/2/release/"
 		if artist == "" and album == "":
 			return "${mbidBaseUrl}?fmt=json&query="
 		elif artist == "":
-			return "${mbidBaseUrl}?fmt=json&query=release:${encodedAlbum}"
+			//return "${mbidBaseUrl}?fmt=json&query=release:${encodedAlbum}"
+			//temporary more fuzzy, because lucene is so strict
+			return "${mbidBaseUrl}?fmt=json&query=release:(${encodedAlbum})"
 		elif album == "":
-			return "${mbidBaseUrl}?fmt=json&query=artist:${encodedArtist}"
+			//return "${mbidBaseUrl}?fmt=json&query=artist:${encodedArtist}"
+			//temporary more fuzzy, because lucene is so strict
+			return "${mbidBaseUrl}?fmt=json&query=artist:(${encodedArtist})"
 		else:
-			return "${mbidBaseUrl}?fmt=json&query=release:${encodedAlbum} AND artist:${encodedArtist}"
+			//return "${mbidBaseUrl}?fmt=json&query=release:${encodedAlbum} AND artist:${encodedArtist}"
+			//temporary more fuzzy, because lucene is so strict
+			return "${mbidBaseUrl}?fmt=json&query=release:(${encodedAlbum}) AND artist:(${encodedArtist})"
 	
 	
 	def RetrieveFullSizeImage(fullSizeCallbackParameter):
