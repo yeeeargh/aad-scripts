@@ -1,6 +1,6 @@
 import System
 import System.Net
-import System.Collections.Generic
+import System.Collections
 import System.Web.Script.Serialization
 import AlbumArtDownloader.Scripts
 import util
@@ -12,12 +12,12 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 	Author as string:
 		get: return "Sebastian Hauser"
 	Version as string:
-		get: return "0.9"
+		get: return "0.10"
 	
 	
 	def Search(artist as string, album as string, results as IScriptResults):
 		if(artist!= null and album!=null):			
-			//striping isn't really necessary here, because musicbrainz handles those characters quite well
+			// striping isn't really necessary here, because musicbrainz handles those characters quite well
 			//artist = StripCharacters("&.'\";:?!", artist)
 			//album = StripCharacters("&.'\";:?!", album)
 			
@@ -32,13 +32,13 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 
 				results.EstimatedCount = mbidResult["count"]
 				
-				//results are sorted by score. get first score and discard all results where the score is less then 60% of that score.
+				// results are sorted by score. get first score and discard all results where the score is less then 60% of that score.
 				scoreThreshold = System.Convert.ToInt32(mbidResult["releases"][0]["score"]) * 0.6
 				
 				for release as Dictionary[of string, object] in mbidResult["releases"]:
 					mbid = release["id"]
 					
-					//join multiple artist credits
+					// join multiple artist credits
 					mbidArtist = ""
 					for artistCredit as Dictionary[of string, object] in release["artist-credit"]:
 						mbidArtist += artistCredit["artist"]["name"]
@@ -62,12 +62,23 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 								thumbnailUrl = image["thumbnails"]["small"]
 								name = mbidArtist + " - " + mbidTitle
 								pictureUrl = image["image"]
-								if image["front"] == true:
-									coverType = CoverType.Front
-								elif image["back"] == true:
-									coverType = CoverType.Back
-								else:
-									coverType = CoverType.Unknown
+
+								// cover art types are stored within that array as strings
+								// since it's impossible to set multiple CoverTypes per image, we need to prioritize the type and use the one with the highest priority
+								// if a image is both front, spine and back, CoverType.Front will be used since Front is more important
+								types = List(image["types"] as Array)
+								coverType = CoverType.Unknown
+								if types.Contains("Medium"):
+									coverType = CoverType.CD
+								if types.Contains("Booklet"):
+									coverType = CoverType.Booklet
+								if types.Contains("Tray"):
+										coverType = CoverType.Inside
+								if types.Contains("Back"):
+										coverType = CoverType.Back
+								if types.Contains("Front"):
+										coverType = CoverType.Front
+								
 								results.Add(GetMusicBrainzStream(thumbnailUrl), name, infoUrl, -1, -1, pictureUrl, coverType)
 						
 						except e as System.Net.WebException:
@@ -77,7 +88,7 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 			except e:
 				return
 		else:
-			//both Parameter album and artist are necessary
+			// at least one of the Parameters album or artist are necessary
 			results.EstimatedCount = 0;
 	
 	
@@ -87,10 +98,9 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 	
 	
 	def GetMbidUrl(artist as string, album as string):
-		//escape lucene search term
+		// escape lucene search term
 		regexpArtist = /[+!(){}\[\]^"~*?:\\\/-]|&&|\|\|/g.Replace(artist) do (m as Match): return "\\${m}"
 		regexpAlbum = /[+!(){}\[\]^"~*?:\\\/-]|&&|\|\|/g.Replace(album) do (m as Match): return "\\${m}"
-		
 		encodedArtist = EncodeUrl(regexpArtist)
 		encodedAlbum = EncodeUrl(regexpAlbum)
 		
@@ -99,15 +109,15 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 			return "${mbidBaseUrl}?fmt=json&query="
 		elif artist == "":
 			//return "${mbidBaseUrl}?fmt=json&query=release:${encodedAlbum}"
-			//temporary more fuzzy, because lucene is so strict
+			// temporary more fuzzy, because lucene is so strict
 			return "${mbidBaseUrl}?fmt=json&query=release:(${encodedAlbum})"
 		elif album == "":
 			//return "${mbidBaseUrl}?fmt=json&query=artist:${encodedArtist}"
-			//temporary more fuzzy, because lucene is so strict
+			// temporary more fuzzy, because lucene is so strict
 			return "${mbidBaseUrl}?fmt=json&query=artist:(${encodedArtist})"
 		else:
 			//return "${mbidBaseUrl}?fmt=json&query=release:${encodedAlbum} AND artist:${encodedArtist}"
-			//temporary more fuzzy, because lucene is so strict
+			// temporary more fuzzy, because lucene is so strict
 			return "${mbidBaseUrl}?fmt=json&query=release:(${encodedAlbum}) AND artist:(${encodedArtist})"
 	
 	
@@ -125,8 +135,7 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 	
 	def GetMusicBrainzStream(url as String):
 		request = WebRequest.Create(url) as HttpWebRequest
-		request.UserAgent = "AAD:" + Name + "/" + Version + " ( https://github.com/yeeeargh/aad-scripts )"
-				
+		request.UserAgent = "AAD:" + Name + "/" + Version + " ( https://github.com/yeeeargh/aad-scripts )"	
 		return request.GetResponse().GetResponseStream()
 	
 	

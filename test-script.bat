@@ -22,11 +22,15 @@ start %aadbin% /artist "Leatherface & Hot Water Music" /album "BYO Split Series,
 :: Just an album name
 start %aadbin% /album "Dummy" /sources "Musicbrainz"
 
-:: Encoding of  ! # $ % & ' ( ) * + , / : ; = ? @ [ ]
+:: Encoding of  ! # $ % & ' ( ) * + , / : ; = ? @ [ ] for Lucene
 start %aadbin% /artist "Oasis" /album "(What's the Story) Morning Glory?" /sources "Musicbrainz"
 
 :: Less strict search with lucene groupings
 start %aadbin% /artist "xploschns in se sky" /album "how strance, inno" /sources "Musicbrainz"
+
+:: Other cover art types
+start %aadbin% /artist "Matula" /album "Kolumbus EP" /sources "Musicbrainz"
+start %aadbin% /artist "Die Žrzte" /album "Le Frisur" /sources "Musicbrainz"
 
 
 :: 7digital Webservice

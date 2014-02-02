@@ -63,4 +63,4 @@ debug
 you can create a logfile for debugging
 
 System.IO.File.WriteAllText("debug.log", "CREATE DEBUG FILE" + "\n")
-System.IO.File.AppendAllText("debug.log", "APPEND DEBUG MESSAGE + "\n")
+System.IO.File.AppendAllText("debug.log", "APPEND DEBUG MESSAGE" + "\n")
