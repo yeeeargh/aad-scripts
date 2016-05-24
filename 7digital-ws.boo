@@ -9,7 +9,7 @@ class SevenDigitalWS(AlbumArtDownloader.Scripts.IScript):
 	Version as string:
 		get: return "0.2"
 	Author as string:
-		get: return "Sebastian Hauser, Alex Vallat"
+		get: return "yeeeargh"
 	
 	
 	def Search(artist as string, album as string, results as IScriptResults):
