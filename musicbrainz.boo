@@ -1,29 +1,21 @@
 import System
 import System.Net
-import System.Collections
-import System.Web.Script.Serialization
+import System.Text.RegularExpressions
 import AlbumArtDownloader.Scripts
 import util
-import System.Text.RegularExpressions
 
 class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 	Name as string:
 		get: return "MusicBrainz"
 	Author as string:
-		get: return "Sebastian Hauser"
+		get: return "yeeeargh"
 	Version as string:
 		get: return "0.10"
 	
 	
 	def Search(artist as string, album as string, results as IScriptResults):
 		if(artist!= null and album!=null):			
-			// striping isn't really necessary here, because musicbrainz handles those characters quite well
-			//artist = StripCharacters("&.'\";:?!", artist)
-			//album = StripCharacters("&.'\";:?!", album)
-			
-			//mbidUrl = GetMbidUrl("Portishead", "Dummy") //Test for album Portishead - Dummy
 			mbidUrl = GetMbidUrl(artist, album)
-			
 			json = JavaScriptSerializer()
 			
 			try:
@@ -31,12 +23,14 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 				mbidResult = json.DeserializeObject(mbidDoc) as Dictionary[of string, object]
 
 				results.EstimatedCount = mbidResult["count"]
+				System.IO.File.AppendAllText("debug.log", "results.EstimatedCount:\n" + results.EstimatedCount + "\n")
 				
 				// results are sorted by score. get first score and discard all results where the score is less then 60% of that score.
 				scoreThreshold = System.Convert.ToInt32(mbidResult["releases"][0]["score"]) * 0.6
 				
 				for release as Dictionary[of string, object] in mbidResult["releases"]:
 					mbid = release["id"]
+					System.IO.File.AppendAllText("debug.log", "mbid:\n" + mbid + "\n")
 					
 					// join multiple artist credits
 					mbidArtist = ""
@@ -93,7 +87,7 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 	
 	
 	def GetCaaUrl(mbid as string):
-		caaBaseUrl = "http://coverartarchive.org/release/"
+		caaBaseUrl = "https://coverartarchive.org/release/"
 		return caaBaseUrl + mbid
 	
 	
@@ -104,7 +98,8 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 		encodedArtist = EncodeUrl(regexpArtist)
 		encodedAlbum = EncodeUrl(regexpAlbum)
 		
-		mbidBaseUrl = "http://musicbrainz.org/ws/2/release/"
+		mbidBaseUrl = "https://musicbrainz.org/ws/2/release/"
+		//mbidBaseUrl = "https://beta.musicbrainz.org/ws/2/release/"
 		if artist == "" and album == "":
 			return "${mbidBaseUrl}?fmt=json&query="
 		elif artist == "":
