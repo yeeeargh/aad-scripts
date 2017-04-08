@@ -23,14 +23,12 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 				mbidResult = json.DeserializeObject(mbidDoc) as Dictionary[of string, object]
 
 				results.EstimatedCount = mbidResult["count"]
-				System.IO.File.AppendAllText("debug.log", "results.EstimatedCount:\n" + results.EstimatedCount + "\n")
 				
 				// results are sorted by score. get first score and discard all results where the score is less then 60% of that score.
 				scoreThreshold = System.Convert.ToInt32(mbidResult["releases"][0]["score"]) * 0.6
 				
 				for release as Dictionary[of string, object] in mbidResult["releases"]:
 					mbid = release["id"]
-					System.IO.File.AppendAllText("debug.log", "mbid:\n" + mbid + "\n")
 					
 					// join multiple artist credits
 					mbidArtist = ""
