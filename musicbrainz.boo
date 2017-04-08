@@ -10,7 +10,7 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 	Author as string:
 		get: return "yeeeargh"
 	Version as string:
-		get: return "0.10"
+		get: return "0.11"
 	
 	
 	def Search(artist as string, album as string, results as IScriptResults):
