@@ -48,12 +48,12 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 							picDoc = GetMusicBrainzPage(picUrl)
 							picResult = json.DeserializeObject(picDoc) as Dictionary[of string, object]
 							
-							infoUrl = picResult["release"]
+							infoUrl = picResult["release"].Replace("http://", "https://")
 
 							for image as Dictionary[of string, object] in picResult["images"]:
-								thumbnailUrl = image["thumbnails"]["small"]
+								thumbnailUrl = image["thumbnails"]["small"].Replace("http://", "https://")
 								name = mbidArtist + " - " + mbidTitle
-								pictureUrl = image["image"]
+								pictureUrl = image["image"].Replace("http://", "https://")
 
 								// cover art types are stored within that array as strings
 								// since it's impossible to set multiple CoverTypes per image, we need to prioritize the type and use the one with the highest priority
