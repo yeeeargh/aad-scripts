@@ -1,6 +1,11 @@
+# refs: System.Web.Extensions
 import System
+import System.Collections
+import System.Collections.Generic
 import System.Net
 import System.Text.RegularExpressions
+import System.Threading
+import System.Web.Script.Serialization
 import AlbumArtDownloader.Scripts
 import util
 
@@ -10,7 +15,7 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 	Author as string:
 		get: return "yeeeargh"
 	Version as string:
-		get: return "0.11"
+		get: return "0.12"
 	
 	
 	def Search(artist as string, album as string, results as IScriptResults):
@@ -58,7 +63,7 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 								// cover art types are stored within that array as strings
 								// since it's impossible to set multiple CoverTypes per image, we need to prioritize the type and use the one with the highest priority
 								// if a image is both front, spine and back, CoverType.Front will be used since Front is more important
-								types = List(image["types"] as Array)
+								types = ArrayList(image["types"] as Array)
 								coverType = CoverType.Unknown
 								if types.Contains("Medium"):
 									coverType = CoverType.CD
@@ -72,7 +77,9 @@ class Musicbrainz(AlbumArtDownloader.Scripts.IScript):
 										coverType = CoverType.Front
 								
 								results.Add(GetMusicBrainzStream(thumbnailUrl), name, infoUrl, -1, -1, pictureUrl, coverType)
-						
+							
+							Thread.Sleep(100)	// to avoid API hammering
+							
 						except e as System.Net.WebException:
 							results.EstimatedCount--
 					else:
