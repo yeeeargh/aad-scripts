@@ -34,7 +34,7 @@ class Bandcamp(AlbumArtDownloader.Scripts.IScript, ICategorised):
 			url = match.Groups["url"].Value;
 			title = match.Groups["title"].Value;
 			img = match.Groups["img"].Value;
-			thumb = "http:" + img + "_7.jpg";
+			thumb = "http:" + img + "_7";
 			full = "http:" + img + "_0";
 			
 			results.Add(thumb, title, url, -1, -1, full, CoverType.Front)

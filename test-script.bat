@@ -41,3 +41,4 @@ set aadscripts=%aadpath%\Scripts
 copy bandcamp.boo %aadscripts%
 :: Example
 start %aadbin% /artist "Big Walnuts Yonder" /album "Big Walnuts Yonder" /sources "Bandcamp"
+start %aadbin% /artist "Punk Goes 8-Bit" /album "Punk Goes 8-Bit: Level 5" /sources "Bandcamp"
