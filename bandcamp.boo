@@ -8,7 +8,7 @@ class Bandcamp(AlbumArtDownloader.Scripts.IScript, ICategorised):
 	Name as string:
 		get: return "bandcamp"
 	Version as string:
-		get: return "0.3"
+		get: return "0.4"
 	Author as string:
 		get: return "Alex Vallat"
 	Category as string:
@@ -35,7 +35,7 @@ class Bandcamp(AlbumArtDownloader.Scripts.IScript, ICategorised):
 			title = match.Groups["title"].Value;
 			img = match.Groups["img"].Value;
 			thumb = "http:" + img + "_7.jpg";
-			full = "http:" + img + "_10.jgp";
+			full = "http:" + img + "_0.jgp";
 			
 			results.Add(thumb, title, url, -1, -1, full, CoverType.Front)
 
